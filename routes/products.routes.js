@@ -1,7 +1,10 @@
 const productsController = require('../controllers/products.controller');
 const router = require('express').Router();
 
-router.get("/:id?", productsController.getProduct);
+router.get("/", productsController.getProduct);
+router.post("/", productsController.createProduct);
+router.put("/:id?", productsController.editProduct);
+router.delete("/:id?", productsController.deleteProduct);
 /*
 POST h http://localhost:3000/api/products
 
@@ -18,8 +21,6 @@ A enviar por Body:
     }
 }
 */
-router.post("/", productsController.createProduct);
-router.put("/", productsController.editProduct);
-router.delete("/:id?", productsController.deleteProduct);
+
 
 module.exports = router;

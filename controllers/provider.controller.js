@@ -1,17 +1,17 @@
 const providerService = require('../services/provider.service');
 
-const obtenerUsuarios = async (req, res) => {
+const obtenerProvedores = async (req, res) => {
     try {
-        const usuarios = await providerService.obtenerTodosLosUsuarios();
+        const usuarios = await providerService.obtenerTodosLosProvedores();
         res.json(usuarios);
     } catch (error) {
         res.status(500).json({ mensaje: error.message });
     }
 };
 
-const obtenerUsuario = async (req, res) => {
+const obtenerProvedor = async (req, res) => {
     try {
-        const usuario = await providerService.obtenerUsuarioPorId(req.params.id);
+        const usuario = await providerService.obtenerProvedorPorId(req.params.id);
         if (usuario) {
             res.json(usuario);
         } else {
@@ -22,20 +22,26 @@ const obtenerUsuario = async (req, res) => {
     }
 };
 
-const crearUsuario = async (req, res) => {
+const crearProvedor = async (req, res) => {
     try {
-        const nuevoUsuario = await providerService.crearUsuario(req.body);
-        res.status(201).json(nuevoUsuario);
+        const nuevoProveedor = await providerService.crearProvedor(req.body);
+        res.status(201).json({
+            message: "Proveedor creado",
+            provider: nuevoProveedor
+        });
     } catch (error) {
         res.status(500).json({ mensaje: error.message });
     }
 };
 
-const actualizarUsuario = async (req, res) => {
+const actualizarProvedor = async (req, res) => {
     try {
-        const usuarioActualizado = await providerService.actualizarUsuario(req.params.id, req.body);
-        if (usuarioActualizado) {
-            res.json(usuarioActualizado);
+        const proveedorActualizado = await providerService.actualizarProvedor(req.params.id, req.body);
+        if (proveedorActualizado) {
+            res.status(201).json({
+                message: "Proveedor actualizado",
+                provider: proveedorActualizado
+        })
         } else {
             res.status(404).json({ mensaje: 'Usuario no encontrado' });
         }
@@ -44,11 +50,11 @@ const actualizarUsuario = async (req, res) => {
     }
 };
 
-const eliminarUsuario = async (req, res) => {
+const eliminarProvedor = async (req, res) => {
     try {
-        const usuario = await providerService.eliminarUsuario(req.params.id);
-        if (usuario) {
-            res.json({ mensaje: 'Usuario eliminado' });
+        const proveedor = await providerService.eliminarProvedor(req.params.id);
+        if (proveedor) {
+            res.json({message: `Se ha borrado el proveedor: ${proveedor.company_name}`});
         } else {
             res.status(404).json({ mensaje: 'Usuario no encontrado' });
         }
@@ -58,9 +64,9 @@ const eliminarUsuario = async (req, res) => {
 };
 
 module.exports = {
-    obtenerUsuarios,
-    obtenerUsuario,
-    crearUsuario,
-    actualizarUsuario,
-    eliminarUsuario
+    obtenerProvedores,
+    obtenerProvedor,
+    crearProvedor,
+    actualizarProvedor,
+    eliminarProvedor
 };

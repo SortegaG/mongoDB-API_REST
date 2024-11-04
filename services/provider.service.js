@@ -1,30 +1,30 @@
 const User = require('../models/provider.model');
 
-const obtenerTodosLosUsuarios = async () => {
+const obtenerTodosLosProvedores = async () => {
     return await User.find();
 };
 
-const obtenerUsuarioPorId = async (id) => {
+const obtenerProvedorPorId = async (id) => {
     return await User.findById(id);
 };
 
-const crearUsuario = async (datosUsuario) => {
+const crearProvedor = async (datosUsuario) => {
     const user = new User(datosUsuario);
     return await user.save();
 };
 
-const actualizarUsuario = async (id, datosUsuario) => {
+const actualizarProvedor = async (id, datosUsuario) => {
     return await User.findByIdAndUpdate(id, datosUsuario, { new: true });
 };
 
-const eliminarUsuario = async (id) => {
+const eliminarProvedor = async (id) => {
     return await User.findByIdAndDelete(id);
 };
 
 module.exports = {
-    obtenerTodosLosUsuarios,
-    obtenerUsuarioPorId,
-    crearUsuario,
-    actualizarUsuario,
-    eliminarUsuario
+    obtenerTodosLosProvedores,
+    obtenerProvedorPorId,
+    crearProvedor,
+    actualizarProvedor,
+    eliminarProvedor
 };

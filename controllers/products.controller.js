@@ -1,46 +1,68 @@
-const Product = require('../models/products.model');
+const Product = require('../models/products.model');  // Importación del modelo Product
+const productService = require('../services/product.service');
 
 // CREATE
 const createProduct = async (req, res) => {
     console.log(req.body);
 
-    try{
+    try {
         const data = req.body;
-        let answer = await new Product(data).save(); //línea q cambia
+        let answer = await new Product(data).save();  // Guarda un nuevo producto
         res.status(201).json(answer);
-
-    }catch (error) {
+    } catch (error) {
         console.log(`ERROR: ${error.stack}`);
-        res.status(400).json({msj:`ERROR: ${error.stack}`});
+        res.status(400).json({ msj: `ERROR: ${error.stack}` });
     }
-}
+};
 
 // READ
 const getProduct = async (req, res) => {
-        try {
-            const id = req.params.id;
-            let products = id? await Product.find({id},'-_id -__v').populate("provider", '-_id -__v') : await Product.find({},'-_id -__v').populate("provider", '-_id -__v'); //{}
-            res.status(200).json(products); // Respuesta de la API para 1 producto
-        }
-        catch (error) {
-            console.log(`ERROR: ${error.stack}`);
-            res.status(400).json({msj:`ERROR: ${error.stack}`});
-        }
-}
+    try {
+        const id = req.params.id;
+        let products = id
+            ? await Product.findById(id, '-_id -__v').populate("provider", '-_id -__v')  // Si se especifica un ID, busca por ID
+            : await Product.find({}, '-_id -__v').populate("provider", '-_id -__v');     // Si no, encuentra todos los productos
+        res.status(200).json(products);
+    } catch (error) {
+        console.log(`ERROR: ${error.stack}`);
+        res.status(400).json({ msj: `ERROR: ${error.stack}` });
+    }
+};
 
-// UPATE
-const editProduct = (req, res) => {
-    res.status(200).send("Producto editado!");
-}
+// UPDATE
+const editProduct = async (req, res) => {
+    try {
+        const productoActualizado = await productService.actualizarProducto(req.params.id, req.body);
+        if (productoActualizado) {
+            res.status(201).json({
+                message: "Producto actualizado",
+                product: productoActualizado
+            });
+        } else {
+            res.status(404).json({ mensaje: 'Producto no encontrado' });
+        }
+    } catch (error) {
+        res.status(500).json({ mensaje: error.message });
+    }
+};
 
 // DELETE
-const deleteProduct = (req, res) => {
-    res.status(200).send("Producto borrado!. Has borrado:"+req.params.id);
-}
+const deleteProduct = async (req, res) => {
+    try {
+        const product = await productService.eliminarProducto(req.params.id);
+        if (product) {
+            res.json({ message: `Se ha borrado el producto: ${product}` });
+        } else {
+            res.status(404).json({ mensaje: 'Producto no encontrado' });
+        }
+    } catch (error) {
+        res.status(500).json({ mensaje: error.message });
+    }
+};
 
 module.exports = {
     createProduct,
     getProduct,
     editProduct,
     deleteProduct
-}
+};
