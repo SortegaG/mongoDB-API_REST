@@ -5,10 +5,10 @@ const app = express(); // Inciializar servidor con express
 
 // Importar middlewares
 const manage404 = require("./middlewares/manage404");
-// const morgan = require("./middlewares/morgan");
+const morgan = require("./middlewares/morgan");
 
-// // Logger
-// app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
+// Logger
+app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
 
 app.use(express.json()); // Middleware para parsear el body de las peticiones
 

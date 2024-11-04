@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 //mongoose.set('strictQuery', false);
 //const DATABASE_URL = "mongodb://localhost:27017/fakeshop";
 // mongoose.connect("mongodb://localhost:27017/local", { useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.connect("mongodb://localhost:27017/local");
+// https://cloud.mongodb.com/v2/6728fd3944ad3a50800e991c#/clusters link
+mongoose.connect("mongodb+srv://SOrtegaG:sortegag@clustersergio.ny22d.mongodb.net/");
 
 const db = mongoose.connection;
 
